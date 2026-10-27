@@ -1,0 +1,73 @@
+{
+  "name": "Squat không tạ",
+  "category": "Gym from zero",
+  "mode": "standing",
+  "timing": {
+    "hold": 0.3,
+    "down": 2,
+    "pause": 0.4,
+    "up": 1.4
+  },
+  "options": {
+    "stance_width_cm": 32,
+    "toe_out_deg": 15
+  },
+  "keyframes": [
+    {
+      "phase": 0,
+      "knee_flexion": 0,
+      "pelvis_anterior_tilt": 0,
+      "lumbar_flexion": 0,
+      "arm_flexion": 85,
+      "arm_abduction": 6,
+      "arm_rotation": 0,
+      "elbow_flexion": 8,
+      "forearm_rotation": 40
+    },
+    {
+      "phase": 0.25,
+      "knee_flexion": 30,
+      "pelvis_anterior_tilt": 5,
+      "lumbar_flexion": 1,
+      "arm_flexion": 85,
+      "arm_abduction": 6,
+      "arm_rotation": 0,
+      "elbow_flexion": 8,
+      "forearm_rotation": 40
+    },
+    {
+      "phase": 0.5,
+      "knee_flexion": 70,
+      "pelvis_anterior_tilt": 14,
+      "lumbar_flexion": 4,
+      "arm_flexion": 85,
+      "arm_abduction": 6,
+      "arm_rotation": 0,
+      "elbow_flexion": 8,
+      "forearm_rotation": 40
+    },
+    {
+      "phase": 0.75,
+      "knee_flexion": 100,
+      "pelvis_anterior_tilt": 23,
+      "lumbar_flexion": 7,
+      "arm_flexion": 85,
+      "arm_abduction": 6,
+      "arm_rotation": 0,
+      "elbow_flexion": 8,
+      "forearm_rotation": 40
+    },
+    {
+      "phase": 1,
+      "knee_flexion": 120,
+      "pelvis_anterior_tilt": 30,
+      "lumbar_flexion": 10,
+      "arm_flexion": 85,
+      "arm_abduction": 6,
+      "arm_rotation": 0,
+      "elbow_flexion": 8,
+      "forearm_rotation": 40
+    }
+  ],
+  "notes": "Squat sâu, hai tay đưa ra trước để giữ thăng bằng."
+}

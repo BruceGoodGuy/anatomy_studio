@@ -1,0 +1,27 @@
+{
+ "sentence": "Mô hình được kiểm tra tự động: 68/68 phép thử chức năng giải phẫu cho đúng chiều dài ra/ngắn lại; điểm bám của 32/32 đường cơ khớp hình cơ 3D (sai lệch dưới 25 mm); 11/11 kết luận cho squat, RDL và split squat khớp với nghiên cứu đã công bố (Kubo et al. 2019; Geiser et al. 2006) và giải phẫu chức năng. Thân trên (MoBL-ARMS): 81/81 phép thử chức năng, 34/35 đường cơ khớp hình 3D, 12/13 kết luận cho các bài đẩy, kéo, tay (gồm Maeo et al. 2023).",
+ "function": [
+  68,
+  68
+ ],
+ "attachments": [
+  32,
+  32
+ ],
+ "literature": [
+  11,
+  11
+ ],
+ "upper_function": [
+  81,
+  81
+ ],
+ "upper_attachments": [
+  34,
+  35
+ ],
+ "upper_literature": [
+  12,
+  13
+ ]
+}

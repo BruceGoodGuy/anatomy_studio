@@ -1,0 +1,73 @@
+{
+ "template": {
+  "title": "Chống xà kép (dips)",
+  "desc": "Hai tay chống xà kép, hạ người tới khuỷu ~90°.",
+  "tags": [
+   "thân trên",
+   "ngực",
+   "tam đầu",
+   "xà kép"
+  ],
+  "order": 15
+ },
+ "name": "Chống xà kép (dips)",
+ "category": "Gym from zero",
+ "mode": "free",
+ "timing": {
+  "hold": 0.3,
+  "down": 1.6,
+  "pause": 0.3,
+  "up": 1.2
+ },
+ "options": {
+  "anchor_r": "none",
+  "anchor_l": "none",
+  "anchor_hand_r": "bar",
+  "anchor_hand_l": "bar",
+  "arms": "same",
+  "pelvis_height_cm": 110
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "pelvis_anterior_tilt": 5,
+   "lumbar_flexion": 0,
+   "hip_flexion_r": 5,
+   "hip_adduction_r": 0,
+   "hip_rotation_r": 0,
+   "knee_flexion_r": 60,
+   "ankle_dorsiflexion_r": -10,
+   "hip_flexion_l": 5,
+   "hip_adduction_l": 0,
+   "hip_rotation_l": 0,
+   "knee_flexion_l": 60,
+   "ankle_dorsiflexion_l": -10,
+   "arm_flexion": 0,
+   "arm_abduction": 12,
+   "arm_rotation": 0,
+   "elbow_flexion": 5,
+   "forearm_rotation": 85
+  },
+  {
+   "phase": 1,
+   "pelvis_anterior_tilt": 18,
+   "lumbar_flexion": 0,
+   "hip_flexion_r": 15,
+   "hip_adduction_r": 0,
+   "hip_rotation_r": 0,
+   "knee_flexion_r": 60,
+   "ankle_dorsiflexion_r": -10,
+   "hip_flexion_l": 15,
+   "hip_adduction_l": 0,
+   "hip_rotation_l": 0,
+   "knee_flexion_l": 60,
+   "ankle_dorsiflexion_l": -10,
+   "arm_flexion": -45,
+   "arm_abduction": 15,
+   "arm_rotation": 0,
+   "elbow_flexion": 95,
+   "forearm_rotation": 85
+  }
+ ],
+ "notes": "Thân hơi đổ trước, hạ người tới khi khuỷu gập khoảng 90° và vai thấp hơn khuỷu một chút."
+}

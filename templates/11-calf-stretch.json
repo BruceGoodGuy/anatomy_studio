@@ -1,0 +1,68 @@
+{
+ "template": {
+  "title": "Giãn bắp chân (dựa tường)",
+  "desc": "Chân sau thẳng, gót bám sàn, dồn người về trước.",
+  "tags": [
+   "giãn cơ",
+   "chạy bộ"
+  ],
+  "order": 11
+ },
+ "name": "Giãn bắp chân dựa tường (chân trái sau)",
+ "category": "Running from zero",
+ "mode": "free",
+ "timing": {
+  "hold": 0.3,
+  "down": 1.6,
+  "pause": 1.5,
+  "up": 1.2
+ },
+ "options": {
+  "anchor_r": "flat",
+  "anchor_l": "flat",
+  "auto_ankle": true
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": 0,
+   "hip_flexion_r": 25,
+   "hip_adduction_r": 0,
+   "hip_rotation_r": 0,
+   "knee_flexion_r": 20,
+   "ankle_dorsiflexion_r": 0,
+   "hip_flexion_l": -15,
+   "hip_adduction_l": 0,
+   "hip_rotation_l": 0,
+   "knee_flexion_l": 0,
+   "ankle_dorsiflexion_l": 0,
+   "arm_flexion": 80,
+   "arm_abduction": 12,
+   "arm_rotation": 0,
+   "elbow_flexion": 20,
+   "forearm_rotation": 160
+  },
+  {
+   "phase": 1,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": 0,
+   "hip_flexion_r": 31,
+   "hip_adduction_r": 0,
+   "hip_rotation_r": 0,
+   "knee_flexion_r": 50,
+   "ankle_dorsiflexion_r": 0,
+   "hip_flexion_l": -25,
+   "hip_adduction_l": 0,
+   "hip_rotation_l": 0,
+   "knee_flexion_l": 0,
+   "ankle_dorsiflexion_l": 0,
+   "arm_flexion": 80,
+   "arm_abduction": 12,
+   "arm_rotation": 0,
+   "elbow_flexion": 20,
+   "forearm_rotation": 160
+  }
+ ],
+ "notes": "Chân trái phía sau duỗi thẳng, gót trái giữ chạm sàn; dồn hông về trước để kéo giãn bắp chân trái."
+}

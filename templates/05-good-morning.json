@@ -1,0 +1,50 @@
+{
+ "template": {
+  "title": "Good morning",
+  "desc": "Gập hông với hai tay sau đầu, gối gần thẳng.",
+  "tags": [
+   "đứng",
+   "gym",
+   "bản lề hông"
+  ],
+  "order": 5
+ },
+ "name": "Good morning",
+ "category": "Gym from zero",
+ "mode": "standing",
+ "timing": {
+  "hold": 0.3,
+  "down": 2.0,
+  "pause": 0.3,
+  "up": 1.4
+ },
+ "options": {
+  "stance_width_cm": 28,
+  "toe_out_deg": 8
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "knee_flexion": 0,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": 0,
+   "arm_flexion": 2,
+   "arm_abduction": 120,
+   "arm_rotation": -90,
+   "elbow_flexion": 144,
+   "forearm_rotation": 110
+  },
+  {
+   "phase": 1,
+   "knee_flexion": 8,
+   "pelvis_anterior_tilt": 65,
+   "lumbar_flexion": 5,
+   "arm_flexion": 2,
+   "arm_abduction": 120,
+   "arm_rotation": -90,
+   "elbow_flexion": 144,
+   "forearm_rotation": 110
+  }
+ ],
+ "notes": "Hai tay đan sau đầu, gập hông tới khi thân gần song song sàn."
+}

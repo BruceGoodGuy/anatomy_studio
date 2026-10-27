@@ -1,0 +1,61 @@
+{
+ "template": {
+  "title": "Goblet squat",
+  "desc": "Ôm tạ trước ngực, thân thẳng hơn squat thường.",
+  "tags": [
+   "đứng",
+   "gym",
+   "tạ đơn"
+  ],
+  "order": 2
+ },
+ "name": "Goblet squat",
+ "category": "Gym from zero",
+ "mode": "standing",
+ "timing": {
+  "hold": 0.3,
+  "down": 2.0,
+  "pause": 0.4,
+  "up": 1.4
+ },
+ "options": {
+  "stance_width_cm": 36,
+  "toe_out_deg": 20
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "knee_flexion": 0,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": 0,
+   "arm_flexion": 21,
+   "arm_abduction": -3,
+   "arm_rotation": 9,
+   "elbow_flexion": 111,
+   "forearm_rotation": 70
+  },
+  {
+   "phase": 0.5,
+   "knee_flexion": 65,
+   "pelvis_anterior_tilt": 10,
+   "lumbar_flexion": 2,
+   "arm_flexion": 21,
+   "arm_abduction": -3,
+   "arm_rotation": 9,
+   "elbow_flexion": 111,
+   "forearm_rotation": 70
+  },
+  {
+   "phase": 1,
+   "knee_flexion": 118,
+   "pelvis_anterior_tilt": 22,
+   "lumbar_flexion": 6,
+   "arm_flexion": 21,
+   "arm_abduction": -3,
+   "arm_rotation": 9,
+   "elbow_flexion": 111,
+   "forearm_rotation": 70
+  }
+ ],
+ "notes": "Ôm tạ đơn sát ngực; thân giữ thẳng hơn nên gối gập sâu hơn."
+}

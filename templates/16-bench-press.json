@@ -1,0 +1,72 @@
+{
+ "template": {
+  "title": "Đẩy ngực nằm (bench press)",
+  "desc": "Nằm ngửa trên ghế, hạ thanh đòn xuống ngực.",
+  "tags": [
+   "thân trên",
+   "ngực",
+   "tạ đòn"
+  ],
+  "order": 16
+ },
+ "name": "Đẩy ngực nằm (bench press)",
+ "category": "Gym from zero",
+ "mode": "free",
+ "timing": {
+  "hold": 0.3,
+  "down": 1.6,
+  "pause": 0.3,
+  "up": 1.2
+ },
+ "options": {
+  "anchor_r": "none",
+  "anchor_l": "none",
+  "anchor_hand_r": "none",
+  "anchor_hand_l": "none",
+  "arms": "same",
+  "pelvis_height_cm": 55
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "pelvis_anterior_tilt": -90,
+   "lumbar_flexion": -5,
+   "hip_flexion_r": 10,
+   "hip_adduction_r": -10,
+   "hip_rotation_r": 0,
+   "knee_flexion_r": 90,
+   "ankle_dorsiflexion_r": 0,
+   "hip_flexion_l": 10,
+   "hip_adduction_l": -10,
+   "hip_rotation_l": 0,
+   "knee_flexion_l": 90,
+   "ankle_dorsiflexion_l": 0,
+   "arm_flexion": 88,
+   "arm_abduction": 12,
+   "arm_rotation": 0,
+   "elbow_flexion": 0,
+   "forearm_rotation": 170
+  },
+  {
+   "phase": 1,
+   "pelvis_anterior_tilt": -90,
+   "lumbar_flexion": -5,
+   "hip_flexion_r": 10,
+   "hip_adduction_r": -10,
+   "hip_rotation_r": 0,
+   "knee_flexion_r": 90,
+   "ankle_dorsiflexion_r": 0,
+   "hip_flexion_l": 10,
+   "hip_adduction_l": -10,
+   "hip_rotation_l": 0,
+   "knee_flexion_l": 90,
+   "ankle_dorsiflexion_l": 0,
+   "arm_flexion": -5,
+   "arm_abduction": 60,
+   "arm_rotation": 0,
+   "elbow_flexion": 95,
+   "forearm_rotation": 170
+  }
+ ],
+ "notes": "Hai tay rộng hơn vai, khuỷu mở khoảng 60°; ở đáy khuỷu thấp hơn mặt ghế một chút."
+}

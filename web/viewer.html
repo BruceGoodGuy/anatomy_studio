@@ -1,0 +1,604 @@
+<title>Muscle Stretch Viewer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a lab "plate" — dark 3D stage + time axis on the left, muscle groups panel on the right (stacks on phones). */
+:root {
+  --paper: #eef1f2; --ink: #16202a; --muted: #5b6874; --rule: #cfd6db; --panel: #f8fafa; --accent: #b5482f;
+  --stage: #0f161c; --stage-ink: #dfe6ea; --stage-muted: #8a99a5;
+  --short: #5ea7bb; --optimal: #d9d2c3; --lengthen: #e9cf5f; --long: #f2903d; --longest: #e0413a;
+  --font-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --step--1: 0.8125rem; --step-0: 0.9375rem; --step-1: 1.125rem; --step-2: 1.5rem; --step-3: clamp(1.9rem, 4.5vw, 2.9rem);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #121a20; --ink: #e3e9ec; --muted: #93a2ad; --rule: #2a3640; --panel: #18222a; --accent: #ec7a5c; --stage: #0b1116; color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --paper: #121a20; --ink: #e3e9ec; --muted: #93a2ad; --rule: #2a3640; --panel: #18222a; --accent: #ec7a5c; --stage: #0b1116; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0;
+  background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: var(--step-0); line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px;
+}
+.wrap { max-width: 1240px; margin: 0 auto; display: grid; gap: 22px; }
+header { display: grid; gap: 10px; max-width: 72ch; }
+.eyebrow { font-family: var(--font-data); font-size: var(--step--1); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-family: var(--font-display); font-stretch: 78%; font-weight: 780; font-size: var(--step-3); line-height: 1.02; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+.lede { margin: 0; font-size: var(--step-1); }
+.lede b { color: var(--accent); font-weight: 650; }
+.lab { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 22px; align-items: start; }
+@media (max-width: 920px) { .lab { grid-template-columns: minmax(0, 1fr); } }
+.stage-col { display: grid; gap: 10px; min-width: 0; }
+.stage { position: relative; background: var(--stage); border-radius: 6px; overflow: hidden; aspect-ratio: 4 / 3.3; max-width: 100%; min-height: 380px; }
+.stage canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+.stage canvas:active { cursor: grabbing; }
+.status { position: absolute; inset: 0; display: grid; place-items: center; color: var(--stage-muted); font: 400 var(--step--1)/1.4 var(--font-data); padding: 24px; text-align: center; }
+.hud { position: absolute; left: 12px; top: 12px; right: 12px; display: flex; gap: 8px; pointer-events: none; flex-wrap: wrap; align-items: flex-start; }
+.hud > * { pointer-events: auto; }
+.hud .legend { margin-left: auto; }
+.seg { display: flex; gap: 4px; }
+.seg button, .stage-btn {
+  font: 500 var(--step--1)/1 var(--font-data); color: var(--stage-ink); background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14); border-radius: 4px; padding: 7px 9px; cursor: pointer;
+}
+.seg button[aria-pressed="true"], .stage-btn[aria-pressed="true"] { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.4); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--long); outline-offset: 2px; }
+.legend { color: var(--stage-muted); font: 400 11px/1.2 var(--font-data); display: grid; gap: 4px; min-width: 230px; }
+.legend .ticks span:nth-child(2) { margin-left: 8%; }
+.legend .bar { height: 7px; border-radius: 4px; background: linear-gradient(90deg, var(--short) 0%, var(--optimal) 13%, var(--lengthen) 56.5%, var(--long) 78%, var(--longest) 100%); }
+.legend[data-mode="length"] .bar { background: linear-gradient(90deg, var(--short) 0%, var(--optimal) 44.4%, var(--long) 72.2%, var(--longest) 100%); }
+.legend .ticks { display: flex; justify-content: space-between; }
+.picked { position: absolute; left: 12px; bottom: 12px; right: 60px; color: var(--stage-ink); font: 650 var(--step-1)/1.2 var(--font-display); font-stretch: 85%; pointer-events: none; text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+.picked small { display: block; font: 400 12px/1.3 var(--font-data); color: var(--stage-muted); }
+.corner { position: absolute; right: 12px; bottom: 12px; display: flex; gap: 4px; }
+.howto { margin: 0; font-size: var(--step--1); color: var(--muted); }
+.track { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; display: grid; gap: 8px; }
+.track-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.track-title { font-weight: 650; font-size: var(--step--1); }
+.angles { display: flex; gap: 14px; flex-wrap: wrap; font: 400 var(--step--1)/1.2 var(--font-data); color: var(--muted); font-variant-numeric: tabular-nums; }
+.angles b { color: var(--ink); font-weight: 500; }
+.timeline { width: 100%; height: 100px; display: block; overflow: visible; cursor: ew-resize; touch-action: none; }
+.ctrl { display: flex; gap: 10px; align-items: center; }
+.ctrl button { font: 500 var(--step--1)/1 var(--font-data); color: var(--ink); background: transparent; border: 1px solid var(--rule); border-radius: 4px; padding: 7px 9px; min-width: 44px; cursor: pointer; }
+.ctrl input[type=range] { flex: 1; accent-color: var(--accent); min-width: 0; }
+.ctrl .time { font: 400 var(--step--1)/1 var(--font-data); color: var(--muted); font-variant-numeric: tabular-nums; min-width: 5.5ch; text-align: right; }
+
+aside { display: grid; gap: 14px; min-width: 0; }
+.panel-title { font: 720 var(--step-2)/1.1 var(--font-display); font-stretch: 85%; margin: 0; }
+.sub { font: 650 var(--step--1)/1.2 var(--font-body); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin: 0; }
+.hint { margin: 0; color: var(--muted); font-size: var(--step--1); }
+.focus-bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 8px 10px; font-size: var(--step--1); }
+.focus-bar button, .mini { font: 500 12px/1 var(--font-body); padding: 6px 9px; border-radius: 4px; border: 1px solid var(--rule); background: transparent; color: var(--ink); cursor: pointer; }
+.groups { display: grid; gap: 6px; }
+.group { border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); }
+.group[data-focus="true"] { border-color: var(--ink); }
+.group[data-hidden="true"] .g-name, .group[data-hidden="true"] .g-val { opacity: .45; }
+.g-head { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto auto; align-items: center; gap: 6px; padding: 6px 8px 6px 4px; }
+.eye { width: 30px; height: 30px; border: 0; background: transparent; color: var(--ink); cursor: pointer; border-radius: 4px; display: grid; place-items: center; }
+.eye svg { width: 18px; height: 18px; }
+.g-name { border: 0; background: transparent; color: inherit; font: 600 var(--step--1)/1.25 var(--font-body); text-align: left; cursor: pointer; padding: 4px 0; display: grid; gap: 4px; min-width: 0; }
+.g-name .t { display: flex; gap: 6px; align-items: baseline; }
+.g-name .n { color: var(--muted); font-weight: 400; }
+.g-name .chev { color: var(--muted); font-size: 11px; }
+.g-val { font: 500 var(--step--1)/1 var(--font-data); font-variant-numeric: tabular-nums; }
+.g-focus[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.meter { position: relative; height: 7px; background: var(--rule); border-radius: 2px; overflow: hidden; }
+.meter .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 2px; }
+.meter .opt { position: absolute; top: -1px; bottom: -1px; width: 1px; background: var(--ink); opacity: .45; }
+.meter .zero { position: absolute; top: 1px; bottom: 1px; width: 1px; background: var(--ink); opacity: .25; }
+.state { font: 600 12px/1.2 var(--font-body); padding: 3px 7px; border-radius: 3px; justify-self: start; }
+.state.s2 { background: color-mix(in srgb, var(--longest) 18%, transparent); color: var(--ink); }
+.state.s1 { background: color-mix(in srgb, var(--lengthen) 30%, transparent); }
+.state.s0, .state.sn { background: var(--paper); color: var(--muted); }
+.meter .max { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); }
+.g-body { padding: 0 8px 8px 38px; display: grid; gap: 2px; }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) 42px; grid-template-rows: auto 7px; column-gap: 8px; row-gap: 4px; padding: 6px 6px; border-radius: 4px; cursor: pointer; border: 1px solid transparent; background: transparent; text-align: left; color: inherit; font: inherit; width: 100%; }
+.row:hover { background: var(--paper); }
+.row[aria-pressed="true"] { border-color: var(--ink); background: var(--paper); }
+.row .nm { font-size: var(--step--1); font-weight: 520; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .val { font: 500 var(--step--1)/1.3 var(--font-data); text-align: right; font-variant-numeric: tabular-nums; }
+.row .meter { grid-column: 1 / -1; }
+.top { display: grid; gap: 2px; }
+.detail { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 14px; display: grid; gap: 8px; }
+.detail h3 { margin: 0; font: 700 var(--step-1)/1.2 var(--font-display); font-stretch: 85%; }
+.detail .latin { font-style: italic; color: var(--muted); font-size: var(--step--1); margin-top: -6px; }
+.facts { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: var(--step--1); margin: 0; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.note { font-size: var(--step--1); color: var(--muted); margin: 0; }
+.method { border-top: 1px solid var(--rule); padding-top: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px 28px; }
+.method h2 { grid-column: 1 / -1; margin: 0; font: 700 var(--step-2)/1.2 var(--font-display); font-stretch: 85%; }
+.method section { min-width: 0; }
+.method h3 { margin: 0 0 4px; font-size: var(--step-0); }
+.method p { margin: 0; color: var(--muted); font-size: var(--step--1); max-width: 62ch; }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="eyebrow">Cơ sinh học</div>
+    <h1 id="title">Đang tải…</h1>
+    <p class="lede" id="lede"></p>
+  </header>
+
+  <div class="lab">
+    <div class="stage-col">
+      <div class="stage" id="stage">
+        <div class="status" id="status">Đang tải mô hình…</div>
+        <div class="hud">
+          <div class="seg" role="group" aria-label="Góc nhìn">
+            <button type="button" data-view="front">Trước</button>
+            <button type="button" data-view="side">Nghiêng</button>
+            <button type="button" data-view="three" aria-pressed="true">Chéo</button>
+            <button type="button" data-view="back">Sau</button>
+          </div>
+          <div class="seg" role="group" aria-label="Kiểu hiển thị cơ" id="modes">
+            <button type="button" data-mode="anatomy" aria-pressed="true">Giải phẫu</button>
+            <button type="button" data-mode="lines">Đường lực</button>
+          </div>
+          <div class="seg" role="group" aria-label="Màu theo" id="colours">
+            <button type="button" data-colour="stretch" aria-pressed="true" title="Cam–đỏ: sợi cơ dài hơn cả lúc bắt đầu lẫn chiều dài tối ưu">Kéo giãn</button>
+            <button type="button" data-colour="length" title="Độ dài tuyệt đối của sợi cơ so với chiều dài tối ưu">l/l<sub>opt</sub></button>
+          </div>
+          <div class="legend" id="legend" data-mode="stretch">
+            <span id="legend-title"></span>
+            <div class="bar"></div>
+            <div class="ticks" id="legend-ticks"></div>
+          </div>
+        </div>
+        <div class="picked" id="picked"></div>
+        <div class="corner">
+          <button type="button" class="stage-btn" id="spin" aria-pressed="false" title="Tự xoay quanh mô hình">Tự xoay</button>
+          <button type="button" class="stage-btn" id="reset" title="Đưa camera về vị trí ban đầu">Đặt lại</button>
+        </div>
+      </div>
+      <p class="howto">Kéo chuột (hoặc một ngón tay) để xoay 360°. Cuộn chuột hoặc chụm hai ngón để phóng to. Chuột phải hoặc hai ngón kéo để dời khung. Bấm vào một cơ để xem chi tiết.</p>
+      <div class="track">
+        <div class="track-head">
+          <span class="track-title" id="track-title">Tiến trình động tác</span>
+          <div class="angles" id="angles"></div>
+        </div>
+        <svg class="timeline" id="timeline" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <div class="ctrl">
+          <button type="button" id="play" aria-label="Tạm dừng">❚❚</button>
+          <button type="button" id="speed" aria-label="Tốc độ phát">1×</button>
+          <input type="range" id="scrub" min="0" max="1000" value="0" step="1" aria-label="Thời điểm trong động tác">
+          <span class="time" id="time">0.00 s</span>
+        </div>
+      </div>
+    </div>
+
+    <aside>
+      <h2 class="panel-title">Cơ giãn thế nào</h2>
+      <div class="focus-bar" id="focus-bar" hidden><span id="focus-label"></span><button type="button" id="focus-clear">Bỏ tập trung</button></div>
+      <div class="detail" id="detail" hidden></div>
+      <p class="sub">Giãn nhiều nhất</p>
+      <div class="top" id="top"></div>
+      <p class="sub">Nhóm cơ</p>
+      <p class="hint">Biểu tượng mắt: hiện/ẩn nhóm. "Tập trung": làm nổi nhóm đó, làm mờ phần còn lại. Bấm tên nhóm để xem từng cơ. Con số là mức sợi cơ dài thêm so với lúc bắt đầu. Vạch đậm là mức lớn nhất trong cả động tác; vạch mảnh là ngưỡng bắt đầu bị kéo giãn.</p>
+      <div class="groups" id="groups"></div>
+    </aside>
+  </div>
+
+  <div class="method">
+    <h2>Số liệu này đến từ đâu</h2>
+    <section><h3>Mô hình</h3><p>Thân dưới: mô hình toàn thân Rajagopal et al. (2016), bản chỉnh của Lai et al. (2017) cho gập gối, gập hông sâu và Uhlrich et al. (2022). Vai và tay: MoBL-ARMS (Saul et al. 2015, dựa trên Holzbaur et al. 2005), có cả chuyển động xương bả vai theo cánh tay. Mỗi cơ là một đường lực từ điểm bám đầu, qua các điểm uốn quanh xương, tới điểm bám cuối. Chưa có số liệu cho cơ thang, cơ trám, răng cưa trước, cơ bụng và cơ dựng sống.</p></section>
+    <section><h3>Hình cơ giải phẫu</h3><p>Hình cơ và xương lấy từ Z-Anatomy (CC BY-SA 4.0), căn vào bộ xương OpenSim. Cơ biến dạng theo một trường chung, trộn mượt chuyển động của các xương quanh nó, nên không rách hay xoắn. Hình dạng là minh hoạ; màu và con số tính từ đường cơ OpenSim cùng tên. Khung nào đường cơ trong mô hình bị quấn sai quanh xương thì cơ đó hiện màu xám, không tô số liệu sai.</p></section>
+    <section><h3>Chuyển động</h3><p id="method-motion">Không phải dữ liệu đo. Chuyển động được dựng từ vài tư thế then chốt, rồi giải sao cho bàn chân đứng yên trên sàn.</p></section>
+    <section><h3>Màu nghĩa là gì</h3><p>Chế độ <b>Kéo giãn</b> (mặc định): cơ chỉ có màu cam–đỏ khi sợi cơ dài hơn <i>cả</i> độ dài lúc bắt đầu động tác <i>lẫn</i> chiều dài tối ưu của chính nó, tức là bị kéo vào vùng giãn. Vàng: đang dài ra (đủ màu ở +25%) nhưng chưa vượt chiều dài tối ưu; thay đổi vài phần trăm gần như không màu. Xanh: ngắn lại. Chế độ l/l<sub>opt</sub> cho xem độ dài tuyệt đối. Màu không phải mức kích hoạt: phân tích chỉ dùng chuyển động, không có dữ liệu lực.</p></section>
+    <section><h3>Gân đàn hồi, cơ thả lỏng</h3><p>Chiều dài sợi cơ tính ở trạng thái cân bằng của mô hình cơ Millard với gân đàn hồi và cơ gần như thả lỏng, tức mức giãn thụ động. Khi cơ đang gồng mạnh, gân giãn thêm nên sợi cơ giãn ít hơn một chút; thứ tự xếp hạng không đổi.</p></section>
+    <section id="validation" hidden><h3>Đã kiểm chứng</h3><p id="validation-text"></p></section>
+  </div>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "__THREE_MODULE__", "three/addons/": "__THREE_ADDONS__" } }
+</script>
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+// @@ANATOMY_CORE@@
+
+const NFL_LO = 0.6, NFL_HI = 1.5, RINGS = 9, S_LO = -0.3, S_HI = 2;
+const $ = (id) => document.getElementById(id);
+const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const PAL = makePalette(css);
+const col = new THREE.Color();
+
+// ---------- data ----------
+let data, bonesData, zan = null, zanU = null;
+try {
+  const inline = (id) => document.getElementById(id)?.textContent;
+  const get = async (id, url) => inline(id) ?? fetch(url).then((r) => { if (!r.ok) throw new Error(url); return r.text(); });
+  const [a, b] = await Promise.all([get("data-motion", "data/motion.json"), get("data-bones", "data/osim.bones.json")]);
+  data = JSON.parse(a); bonesData = JSON.parse(b);
+  try { zan = JSON.parse(await get("data-zanat", "data/zanat_binding.json")); } catch { zan = null; }
+  try { zanU = JSON.parse(await get("data-zanat-upper", "data/zanat_upper.json")); } catch { zanU = null; }
+} catch (e) {
+  $("status").textContent = "Không tải được dữ liệu mô hình (" + (e && e.message ? e.message : e) + "). Tải lại trang để thử lại.";
+  throw e;
+}
+$("status").hidden = true;
+document.title = data.title;
+$("title").textContent = data.title;
+$("eyebrow").textContent = [data.category, "Cơ sinh học"].filter(Boolean).join(" · ");
+
+const F = data.times.length, M = data.muscles.length, N = data.nPts, B = data.bodies.length, MIRROR = data.mirror;
+const dt = data.times[1] - data.times[0], duration = data.times[F - 1];
+const paths = new Int16Array(b64(data.paths_mm_i16)), nflArr = new Uint16Array(b64(data.nfl_u16)), xf = new Float32Array(b64(data.xforms_f32));
+// 0 = khung không có số liệu tin cậy (đường cơ quấn sai trong mô hình) → NaN, tô màu trung tính
+const nflAt = (f, j) => { const v = nflArr[f * M + j]; return v ? v / 10000 : NaN; };
+const summary = Object.fromEntries(data.summary.map((s) => [s.id, s]));
+const byId = {};
+const PH = data.phase || data.times.map((_, f) => f / (F - 1));
+data.muscles.forEach((m, j) => {
+  m.j = j; m.s = summary[m.id]; byId[m.id] = m;
+  // số liệu tính thẳng từ chuỗi l/l_opt (định nghĩa giống pipeline/stretch.py)
+  let l0 = NaN, mx = -1, mn = Infinity, k = 0, nOk = 0;
+  for (let f = 0; f < F; f++) { const v = nflAt(f, j); if (Number.isNaN(v)) continue; nOk++; if (Number.isNaN(l0)) l0 = v; if (v > mx) { mx = v; k = f; } if (v < mn) mn = v; }
+  const has = nOk > 0, beyond = has ? Math.max(0, mx - Math.max(1, l0)) : 0;
+  m.st = { l0, max: has ? mx : NaN, min: has ? mn : NaN, f: k, t: data.times[k], change: has ? mx / l0 - 1 : 0, beyond, stretched: beyond > 0.02 && mx / l0 - 1 > 0.05, valid: nOk / F };
+});
+const bodyIdx = Object.fromEntries(data.bodies.map((b, i) => [b, i]));
+
+// ---------- scene ----------
+const stage = $("stage");
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+stage.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(css("--stage"));
+const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 30);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = !reduceMotion; controls.dampingFactor = 0.08;
+controls.minDistance = 0.5; controls.maxDistance = 8;
+controls.minPolarAngle = 0; controls.maxPolarAngle = Math.PI;   // lên tận đỉnh, xuống tận dưới chân
+controls.autoRotateSpeed = 1.6;
+scene.add(new THREE.HemisphereLight(0xdfe8ee, 0x1a2229, 1.5));
+const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(2, 3, 2.5); scene.add(key);
+const rim = new THREE.DirectionalLight(0x9fc4d8, 0.9); rim.position.set(-2.5, 1.5, -2); scene.add(rim);
+const grid = new THREE.GridHelper(3, 30, 0x4a5a66, 0x26323b);
+grid.material.transparent = true; grid.material.opacity = 0.55; scene.add(grid);
+
+const boneMat = new THREE.MeshStandardMaterial({ color: 0xdfe7ec, emissive: 0x24313a, roughness: 0.55, transparent: true, opacity: 0.42, depthWrite: false });
+const bodyNodes = buildBones(scene, bonesData, data.bodies, boneMat).nodes;
+
+// ---------- muscle tubes (line-of-action view) ----------
+function makeTube() {
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(new Float32Array(N * RINGS * 3), 3));
+  g.setAttribute("normal", new THREE.BufferAttribute(new Float32Array(N * RINGS * 3), 3));
+  const idx = [];
+  for (let i = 0; i < N - 1; i++) for (let k = 0; k < RINGS; k++) { const a = i * RINGS + k, b = i * RINGS + (k + 1) % RINGS; idx.push(a, a + RINGS, b, b, a + RINGS, b + RINGS); }
+  g.setIndex(idx); return g;
+}
+const P = Array.from({ length: N }, () => new THREE.Vector3());
+const T = new THREE.Vector3(), Nn = new THREE.Vector3(), Bn = new THREE.Vector3(), tmp = new THREE.Vector3();
+function updateTube(geom, radius) {
+  const pos = geom.attributes.position.array, nor = geom.attributes.normal.array;
+  for (let i = 0; i < N; i++) {
+    T.subVectors(P[Math.min(i + 1, N - 1)], P[Math.max(i - 1, 0)]).normalize();
+    if (i === 0) { tmp.set(0, 0, 1); if (Math.abs(T.dot(tmp)) > 0.9) tmp.set(1, 0, 0); Nn.crossVectors(T, tmp).normalize(); }
+    else Nn.addScaledVector(T, -Nn.dot(T)).normalize();
+    Bn.crossVectors(T, Nn);
+    const r = radius * (0.32 + 0.68 * Math.sin(Math.PI * i / (N - 1)));
+    for (let k = 0; k < RINGS; k++) {
+      const a = (k / RINGS) * Math.PI * 2, cx = Math.cos(a), sx = Math.sin(a);
+      const nx = cx * Nn.x + sx * Bn.x, ny = cx * Nn.y + sx * Bn.y, nz = cx * Nn.z + sx * Bn.z, o = (i * RINGS + k) * 3;
+      pos[o] = P[i].x + r * nx; pos[o + 1] = P[i].y + r * ny; pos[o + 2] = P[i].z + r * nz; nor[o] = nx; nor[o + 1] = ny; nor[o + 2] = nz;
+    }
+  }
+  geom.attributes.position.needsUpdate = true; geom.attributes.normal.needsUpdate = true;
+}
+const tubes = [];
+for (const m of data.muscles) {
+  m.radius = 0.0035 + 0.0032 * Math.sqrt(m.fmax / 1000);
+  for (const mirror of MIRROR ? [false, true] : [false]) {
+    const mesh = new THREE.Mesh(makeTube(), new THREE.MeshStandardMaterial({ roughness: 0.45, transparent: true }));
+    mesh.frustumCulled = false; mesh.renderOrder = 1; mesh.userData.m = m; scene.add(mesh);
+    tubes.push({ m, mirror, mesh });
+  }
+}
+
+// ---------- Z-Anatomy ----------
+const ZBS = [zan, zanU].filter(Boolean).map((z) => new ZAnatomy(scene, z, bodyNodes, bodyIdx, (id) => byId[id] || null, MIRROR));
+const ZB = ZBS.length ? ZBS[0] : null;
+const zMapped = (m) => ZBS.some((z) => z.mapped.has(m));
+
+// ---------- state ----------
+// nhóm cơ: nhóm bị kéo giãn mạnh nhất lên đầu (bài thân dưới thì các nhóm thân trên xuống cuối)
+const groupPeak = (g) => Math.max(...data.muscles.filter((m) => m.group === g).map((m) => (Number.isNaN(m.st.max) ? -1 : stretchIndex(m.st.max, m.st.l0))));
+const groupKeys = Object.keys(data.groups).filter((g) => data.muscles.some((m) => m.group === g)).sort((a, b) => (a === "other") - (b === "other") || groupPeak(b) - groupPeak(a));
+const state = { t: 0, playing: !reduceMotion, speed: 1, selected: null, focus: null, mode: zan ? "anatomy" : "lines", colour: "stretch",
+  visible: new Set(groupKeys.filter((g) => g !== "other")), open: new Set() };
+function frameAt(t) { const x = THREE.MathUtils.clamp(t / dt, 0, F - 1); const f0 = Math.floor(x); return [f0, Math.min(f0 + 1, F - 1), x - f0]; }
+function nflNow(j) { const [f0, f1, a] = frameAt(state.t); return nflAt(f0, j) * (1 - a) + nflAt(f1, j) * a; }
+const valueOf = (m) => (state.colour === "stretch" ? stretchIndex(nflNow(m.j), m.st.l0) : nflNow(m.j));
+const colourOf = (v, out) => (Number.isNaN(v) ? out.copy(neutral) : state.colour === "stretch" ? PAL.stretch(v, out) : PAL.length(v, out));
+const meterPct = (v) => (state.colour === "stretch" ? THREE.MathUtils.clamp((v - S_LO) / (S_HI - S_LO), 0, 1) : THREE.MathUtils.clamp((v - NFL_LO) / (NFL_HI - NFL_LO), 0, 1)) * 100;
+const neutral = new THREE.Color(0x8a8f93);
+// how a muscle is drawn: "hide" | "dim" | "on" | "picked"
+function look(muscles) {
+  const sel = state.selected;
+  if (sel) return muscles.includes(sel) ? "picked" : (muscles.some((m) => state.visible.has(m.group)) ? "dim" : "hide");
+  if (state.focus) return muscles.some((m) => m.group === state.focus) ? "on" : (muscles.some((m) => state.visible.has(m.group)) ? "dim" : "hide");
+  return muscles.some((m) => state.visible.has(m.group)) ? "on" : "hide";
+}
+
+
+const qa = new THREE.Quaternion(), qb = new THREE.Quaternion();
+function applyPose() {
+  const [f0, f1, a] = frameAt(state.t);
+  for (let b = 0; b < B; b++) {
+    const node = bodyNodes[b], o0 = (f0 * B + b) * 7, o1 = (f1 * B + b) * 7;
+    node.position.set(xf[o0] + (xf[o1] - xf[o0]) * a, xf[o0 + 1] + (xf[o1 + 1] - xf[o0 + 1]) * a, xf[o0 + 2] + (xf[o1 + 2] - xf[o0 + 2]) * a);
+    qa.set(xf[o0 + 3], xf[o0 + 4], xf[o0 + 5], xf[o0 + 6]); qb.set(xf[o1 + 3], xf[o1 + 4], xf[o1 + 5], xf[o1 + 6]);
+    node.quaternion.slerpQuaternions(qa, qb, a); node.updateMatrix();
+  }
+  const anat = state.mode === "anatomy";
+  for (const tb of tubes) {
+    const L = look([tb.m]), vis = L !== "hide" && !(anat && zMapped(tb.m));
+    tb.mesh.visible = vis; if (!vis) continue;
+    const j = tb.m.j, sz = tb.mirror ? -1 : 1;
+    for (let i = 0; i < N; i++) {
+      const o0 = (((f0 * M + j) * N) + i) * 3, o1 = (((f1 * M + j) * N) + i) * 3;
+      P[i].set((paths[o0] + (paths[o1] - paths[o0]) * a) / 1000, (paths[o0 + 1] + (paths[o1 + 1] - paths[o0 + 1]) * a) / 1000, sz * (paths[o0 + 2] + (paths[o1 + 2] - paths[o0 + 2]) * a) / 1000);
+    }
+    updateTube(tb.mesh.geometry, tb.m.radius * (L === "picked" ? 1.45 : 1));
+    const v = valueOf(tb.m);
+    colourOf(v, col);
+    const hot = state.colour === "stretch" ? THREE.MathUtils.clamp(v - 1, 0, 1) : THREE.MathUtils.clamp((v - 1) * 2, 0, 1);
+    const mat = tb.mesh.material;
+    mat.color.copy(col); mat.emissive.copy(col).multiplyScalar(L === "dim" ? 0.04 : 0.28 + 0.35 * hot);
+    mat.opacity = L === "dim" ? 0.14 : 1; mat.depthWrite = L !== "dim";
+  }
+  for (const z of ZBS) { if (anat) z.update(valueOf, colourOf, look, neutral); else z.hide(); }
+}
+
+// ---------- camera ----------
+const box = new THREE.Box3();
+for (let f = 0; f < F; f += 3) for (let b = 0; b < B; b++) { const o = (f * B + b) * 7; box.expandByPoint(tmp.set(xf[o], xf[o + 1], xf[o + 2])); }
+box.expandByPoint(tmp.set(box.min.x, 0, box.min.z)); box.max.y += 0.25;          // floor + head
+const centre = box.getCenter(new THREE.Vector3()), radius = box.getSize(new THREE.Vector3()).length() / 2;
+const VIEWS = { front: [1, 0.12, 0], side: [0, 0.12, 1], three: [0.72, 0.3, 0.62], back: [-1, 0.15, 0.05] };
+function setView(name) {
+  const d = new THREE.Vector3(...VIEWS[name]).normalize();
+  const dist = radius / Math.sin(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.05;
+  controls.target.copy(centre); camera.position.copy(centre).addScaledVector(d, dist); controls.update();
+  document.querySelectorAll("[data-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === name)));
+}
+document.querySelectorAll("[data-view]").forEach((b) => b.addEventListener("click", () => setView(b.dataset.view)));
+controls.addEventListener("start", () => document.querySelectorAll("[data-view]").forEach((b) => b.setAttribute("aria-pressed", "false")));
+$("reset").addEventListener("click", () => setView("three"));
+$("spin").addEventListener("click", () => { controls.autoRotate = !controls.autoRotate; $("spin").setAttribute("aria-pressed", String(controls.autoRotate)); });
+function resize() {
+  const w = stage.clientWidth, h = stage.clientHeight;
+  renderer.setSize(w, h, false); camera.aspect = w / h;
+  camera.fov = camera.aspect < 1.1 ? 32 * 1.1 / camera.aspect : 32; camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(stage); resize(); setView("three");
+
+document.querySelectorAll("[data-mode]").forEach((b) => {
+  if (!zan) { b.parentElement.hidden = true; return; }
+  b.addEventListener("click", () => { state.mode = b.dataset.mode; document.querySelectorAll("[data-mode]").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); refresh(); });
+});
+function setColour(c) {
+  state.colour = c;
+  document.querySelectorAll("[data-colour]").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.colour === c)));
+  const lg = $("legend"); lg.dataset.mode = c;
+  if (c === "stretch") {
+    $("legend-title").textContent = "Động tác kéo giãn cơ tới đâu";
+    $("legend-ticks").innerHTML = "<span>ngắn lại</span><span>dài ra</span><span>bị kéo giãn</span>";
+  } else {
+    $("legend-title").textContent = "Chiều dài sợi cơ / chiều dài tối ưu";
+    $("legend-ticks").innerHTML = "<span>0.6 co ngắn</span><span>1.0</span><span>1.5 giãn</span>";
+  }
+  buildPanel(); refresh();
+}
+document.querySelectorAll("[data-colour]").forEach((b) => b.addEventListener("click", () => setColour(b.dataset.colour)));
+
+// ---------- angles + phases ----------
+const A = data.angles.rows, sym = MIRROR;
+function angleNow(k) { const [f0, f1, a] = frameAt(state.t); return A[f0][k] * (1 - a) + A[f1][k] * a; }
+const phases = [];
+{
+  const lab = (i) => { const p = PH[i]; if (p < 0.02) return "Bắt đầu"; if (p > 0.98) return "Giữ"; return PH[Math.min(i + 1, F - 1)] >= PH[Math.max(i - 1, 0)] ? "Vào thế" : "Trở về"; };
+  let cur = lab(0), start = 0;
+  for (let i = 1; i <= F; i++) { const l = i < F ? lab(i) : null; if (l !== cur) { phases.push({ from: data.times[start], to: data.times[i - 1], label: cur }); cur = l; start = i; } }
+}
+
+// ---------- timeline ----------
+const svg = $("timeline"), W = 1000, H = 100, PAD = 12;
+const xOf = (t) => (t / duration) * W;
+function drawTimeline() {
+  const sel = state.selected;
+  let vals, lo, hi, refs = [];
+  if (sel) {
+    vals = Array.from({ length: F }, (_, f) => nflAt(f, sel.j)); lo = NFL_LO; hi = Math.max(NFL_HI, sel.st.max + 0.05);
+    refs.push([1, "1.0 tối ưu", "4 4"]);
+    if (Math.abs(sel.st.l0 - 1) > 0.04) refs.push([sel.st.l0, "lúc bắt đầu", "1 4"]);
+    $("track-title").textContent = `${sel.vi}: chiều dài sợi cơ / tối ưu`;
+  } else { vals = PH; lo = 0; hi = 1; $("track-title").textContent = "Tiến trình động tác (0 = bắt đầu, 1 = điểm cuối)"; }
+  const yOf = (v) => H - PAD - ((THREE.MathUtils.clamp(v, lo, hi) - lo) / (hi - lo)) * (H - 2 * PAD);
+  const pts = vals.map((v, f) => `${xOf(data.times[f]).toFixed(1)},${yOf(v).toFixed(1)}`).join(" ");
+  const band = phases.map((p, i) => `<rect x="${xOf(p.from)}" y="0" width="${Math.max(xOf(p.to) - xOf(p.from), 1)}" height="${H}" fill="var(--rule)" opacity="${i % 2 ? 0.45 : 0.2}"/>` +
+    (xOf(p.to) - xOf(p.from) > 70 ? `<text x="${xOf(p.from) + 6}" y="${H - 3}" font-size="11" font-family="var(--font-data)" fill="var(--muted)">${p.label}</text>` : "")).join("");
+  const refLines = refs.map(([v, label, dash]) => `<line x1="0" x2="${W}" y1="${yOf(v)}" y2="${yOf(v)}" stroke="var(--muted)" stroke-dasharray="${dash}" vector-effect="non-scaling-stroke"/><text x="${W - 4}" y="${yOf(v) - 4}" text-anchor="end" font-size="11" font-family="var(--font-data)" fill="var(--muted)">${label}</text>`).join("");
+  const peak = sel ? `<circle cx="${xOf(data.times[sel.st.f])}" cy="${yOf(vals[sel.st.f])}" r="4" fill="var(--accent)"/>` : "";
+  svg.innerHTML = band + refLines + `<polyline points="${pts}" fill="none" stroke="var(--ink)" stroke-width="2" vector-effect="non-scaling-stroke"/>` + peak +
+    `<line id="playhead" x1="0" x2="0" y1="0" y2="${H}" stroke="var(--accent)" stroke-width="2" vector-effect="non-scaling-stroke"/>`;
+}
+function scrubFromPointer(e) { const r = svg.getBoundingClientRect(); state.t = THREE.MathUtils.clamp((e.clientX - r.left) / r.width, 0, 1) * duration; setPlaying(false); refresh(); }
+svg.addEventListener("pointerdown", (e) => { svg.setPointerCapture(e.pointerId); scrubFromPointer(e); });
+svg.addEventListener("pointermove", (e) => { if (svg.hasPointerCapture(e.pointerId)) scrubFromPointer(e); });
+
+// ---------- panel ----------
+const EYE_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.6 6.6A17 17 0 0 0 2 12s3.6 7 10 7a9.6 9.6 0 0 0 4.4-1"/></svg>';
+// xếp hạng: cơ bị kéo giãn (vượt cả lúc bắt đầu lẫn tối ưu) trước, rồi theo mức dài thêm
+const ranked = [...data.muscles].sort((a, b) => (b.st.beyond - a.st.beyond) || (b.st.change - a.st.change)).filter((m) => m.st.valid > 0);
+const marks = () => (state.colour === "stretch"
+  ? `<span class="zero" style="left:${meterPct(0)}%"></span><span class="opt" style="left:${meterPct(1)}%"></span>`
+  : `<span class="opt" style="left:${meterPct(1)}%"></span>`);
+const peakVal = (m) => (Number.isNaN(m.st.max) ? 0 : state.colour === "stretch" ? stretchIndex(m.st.max, m.st.l0) : m.st.max);
+const meter = (m) => `<span class="meter"><span class="fill"></span>${marks()}<span class="max" style="left:calc(${meterPct(peakVal(m))}% - 1px)"></span></span>`;
+const fmtChange = (x) => `${x >= 0 ? "+" : "−"}${Math.abs(x * 100).toFixed(0)}%`;
+function valueText(m) {
+  const v = nflNow(m.j);
+  if (Number.isNaN(v)) return "–";
+  if (v < SLACK) return "chùng";
+  return state.colour === "stretch" ? fmtChange(v / m.st.l0 - 1) : v.toFixed(2);
+}
+const rowEls = [];
+function muscleRow(m) {
+  const r = document.createElement("button");
+  r.type = "button"; r.className = "row"; r.title = m.latin;
+  r.innerHTML = `<span class="nm">${esc(m.vi)}</span><span class="val">–</span>${meter(m)}`;
+  r.addEventListener("click", () => select(state.selected === m ? null : m));
+  rowEls.push([m, r]); return r;
+}
+function buildPanel() {
+  rowEls.length = 0;
+  const top = $("top"); top.replaceChildren(...ranked.filter((m) => m.group !== "other" && m.st.change > 0.03).slice(0, 5).map(muscleRow));
+  const wrap = $("groups"); wrap.replaceChildren();
+  for (const g of groupKeys) {
+    const ms = ranked.filter((m) => m.group === g);
+    const el = document.createElement("div"); el.className = "group";
+    el.dataset.focus = String(state.focus === g); el.dataset.hidden = String(!state.visible.has(g));
+    const vis = state.visible.has(g), open = state.open.has(g);
+    el.innerHTML = `<div class="g-head">
+        <button type="button" class="eye" aria-pressed="${vis}" aria-label="${vis ? "Ẩn" : "Hiện"} nhóm ${esc(data.groups[g].vi)}">${vis ? EYE_ON : EYE_OFF}</button>
+        <button type="button" class="g-name" aria-expanded="${open}"><span class="t"><span class="chev">${open ? "▾" : "▸"}</span>${esc(data.groups[g].vi)} <span class="n">${ms.length} cơ</span></span>
+          <span class="meter g-meter"><span class="fill"></span>${marks()}</span></button>
+        <span class="g-val">–</span>
+        <button type="button" class="mini g-focus" aria-pressed="${state.focus === g}">${state.focus === g ? "Đang tập trung" : "Tập trung"}</button>
+      </div>`;
+    el.querySelector(".eye").addEventListener("click", () => { state.visible.has(g) ? state.visible.delete(g) : state.visible.add(g); if (state.focus === g && !state.visible.has(g)) state.focus = null; buildPanel(); refresh(); });
+    el.querySelector(".g-name").addEventListener("click", () => { state.open.has(g) ? state.open.delete(g) : state.open.add(g); buildPanel(); refresh(); });
+    el.querySelector(".g-focus").addEventListener("click", () => { setFocus(state.focus === g ? null : g); });
+    if (open) { const body = document.createElement("div"); body.className = "g-body"; ms.forEach((m) => body.append(muscleRow(m))); el.append(body); }
+    el._g = g; el._ms = ms; wrap.append(el);
+  }
+  for (const [m, r] of rowEls) r.setAttribute("aria-pressed", String(state.selected === m));
+  const fb = $("focus-bar");
+  fb.hidden = !state.focus; if (state.focus) $("focus-label").textContent = `Đang tập trung: ${data.groups[state.focus].vi}`;
+}
+function setFocus(g) { state.focus = g; if (g) { state.visible.add(g); state.selected = null; $("detail").hidden = true; $("picked").textContent = ""; } buildPanel(); drawTimeline(); refresh(); }
+$("focus-clear").addEventListener("click", () => setFocus(null));
+function updatePanel() {
+  for (const [m, r] of rowEls) {
+    const v = valueOf(m); r.querySelector(".val").textContent = valueText(m);
+    const fill = r.querySelector(".fill"); fill.style.width = (Number.isNaN(v) ? 0 : meterPct(v)) + "%"; fill.style.background = "#" + colourOf(v, col).getHexString();
+  }
+  for (const el of $("groups").children) {
+    let best = null, bv = -Infinity; for (const m of el._ms) { const v = valueOf(m); if (!Number.isNaN(v) && v > bv) { bv = v; best = m; } }
+    el.querySelector(".g-val").textContent = best ? valueText(best) : "–";
+    const fill = el.querySelector(".g-meter .fill"); fill.style.width = meterPct(bv) + "%"; fill.style.background = "#" + colourOf(bv, col).getHexString();
+  }
+}
+
+// ---------- selection ----------
+function verdict(st) {
+  if (!(st.valid > 0)) return ["sn", "Không có số liệu tin cậy ở động tác này"];
+  if (st.stretched) return ["s2", "Bị kéo giãn: dài hơn cả lúc bắt đầu lẫn chiều dài tối ưu"];
+  if (st.change > 0.03) return ["s1", st.max < 1 ? "Dài ra nhưng vẫn ngắn hơn chiều dài tối ưu" : "Dài ra rất ít so với lúc bắt đầu"];
+  if (st.min / st.l0 - 1 < -0.05) return ["s0", "Ngắn lại trong động tác"];
+  return ["sn", "Gần như không đổi"];
+}
+function select(m) {
+  state.selected = m;
+  if (m) { state.visible.add(m.group); state.open.add(m.group); }
+  buildPanel();
+  const d = $("detail");
+  if (!m) { d.hidden = true; $("picked").textContent = ""; }
+  else {
+    const st = m.st, s = m.s || {}, longTendon = m.lts / m.lopt > 3, ph = PH[st.f], [cls, txt] = verdict(st);
+    d.hidden = false;
+    d.innerHTML = `<h3>${esc(m.vi)}</h3><div class="latin">${esc(m.latin)} · ${esc(data.groups[m.group].vi)}</div>
+      <span class="state ${cls}">${txt}</span>
+      ${st.valid > 0 && st.valid < 1 ? `<p class="note">Ở ${Math.round((1 - st.valid) * 100)}% thời gian của động tác, đường cơ này trong mô hình bị quấn sai quanh xương; các khung đó không có số liệu (cơ hiện màu xám).</p>` : ""}
+      <dl class="facts"><dt>Lúc bắt đầu</dt><dd>${st.l0.toFixed(2)} × tối ưu</dd>
+        <dt>Dài nhất</dt><dd>${st.max.toFixed(2)} × tối ưu, lúc ${st.t.toFixed(2)} s (tiến trình ${ph.toFixed(2)})</dd>
+        <dt>Sợi cơ dài thêm</dt><dd>${fmtChange(st.change)}</dd>
+        ${s.mtu_change_pct != null ? `<dt>Cả cơ + gân</dt><dd>${s.mtu_change_pct > 0 ? "+" : ""}${s.mtu_change_pct}%</dd>` : ""}</dl>
+      ${st.min < SLACK ? `<p class="note">Có lúc sợi cơ ngắn tới ${st.min.toFixed(2)} × tối ưu: ngoài đời cơ và gân đã chùng, không còn căng.</p>` : ""}
+      ${longTendon ? `<p class="note">Gân của cơ này dài gấp ${(m.lts / m.lopt).toFixed(1)} lần sợi cơ. Số liệu tính cho cơ thả lỏng; khi cơ gồng mạnh, gân giãn thêm nên sợi cơ giãn ít hơn một chút.</p>` : ""}
+      <button type="button" class="mini" id="unpick">Bỏ chọn</button>`;
+    $("unpick").addEventListener("click", () => select(null));
+    $("picked").innerHTML = `${esc(m.vi)}<small>${esc(m.latin)}</small>`;
+  }
+  drawTimeline(); refresh();
+}
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+let downAt = null;
+renderer.domElement.addEventListener("pointerdown", (e) => { downAt = [e.clientX, e.clientY]; controls.autoRotate = false; $("spin").setAttribute("aria-pressed", "false"); });
+renderer.domElement.addEventListener("pointerup", (e) => {
+  if (!downAt || Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 5) return;
+  const r = renderer.domElement.getBoundingClientRect();
+  ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(ndc, camera);
+  const zm = ZBS.flatMap((z) => z.pickables());
+  zm.forEach((m) => m.geometry.computeBoundingSphere());
+  const hit = ray.intersectObjects([...tubes.filter((t) => t.mesh.visible && t.mesh.material.opacity > 0.5).map((t) => t.mesh), ...zm])[0];
+  if (hit?.object.userData.zrec) select(hit.object.userData.zb.muscleAt(hit));
+  else select(hit ? hit.object.userData.m : null);
+});
+
+// ---------- playback ----------
+const playBtn = $("play"), scrub = $("scrub");
+function setPlaying(p) { state.playing = p; playBtn.textContent = p ? "❚❚" : "▶"; playBtn.setAttribute("aria-label", p ? "Tạm dừng" : "Phát"); }
+playBtn.addEventListener("click", () => setPlaying(!state.playing));
+$("speed").addEventListener("click", () => { state.speed = state.speed === 1 ? 0.5 : state.speed === 0.5 ? 0.25 : 1; $("speed").textContent = state.speed + "×"; });
+scrub.addEventListener("input", () => { state.t = (scrub.value / 1000) * duration; setPlaying(false); refresh(); });
+function refresh() {
+  applyPose(); updatePanel();
+  scrub.value = Math.round((state.t / duration) * 1000);
+  $("time").textContent = state.t.toFixed(2) + " s";
+  const ph = document.getElementById("playhead"); if (ph) { ph.setAttribute("x1", xOf(state.t)); ph.setAttribute("x2", xOf(state.t)); }
+  const ang = sym
+    ? `<span>Gối <b>${angleNow(1).toFixed(0)}°</b></span><span>Hông <b>${angleNow(2).toFixed(0)}°</b></span><span>Cổ chân <b>${angleNow(3).toFixed(0)}°</b></span>`
+    : `<span>Gối P/T <b>${angleNow(1).toFixed(0)}° / ${angleNow(5).toFixed(0)}°</b></span><span>Hông P/T <b>${angleNow(2).toFixed(0)}° / ${angleNow(6).toFixed(0)}°</b></span><span>Cổ chân P/T <b>${angleNow(3).toFixed(0)}° / ${angleNow(7).toFixed(0)}°</b></span>`;
+  $("angles").innerHTML = ang + `<span>Thân <b>${angleNow(4).toFixed(0)}°</b></span>`;
+}
+
+// ---------- headline ----------
+{
+  const main = ranked.filter((m) => m.group !== "other");
+  const st = main.filter((m) => m.st.stretched).slice(0, 3);
+  const nm = (ms) => ms.map((m) => `<b>${esc(m.vi.toLowerCase())}</b>`);
+  const join = (a) => (a.length > 1 ? a.slice(0, -1).join(", ") + " và " + a.at(-1) : a[0] || "");
+  let lede;
+  if (st.length) lede = `Động tác này kéo giãn nhiều nhất ${join(nm(st))}: sợi cơ của chúng bị kéo dài hơn cả lúc bắt đầu lẫn chiều dài tối ưu. `;
+  else lede = `Động tác này không kéo cơ chân nào vượt chiều dài tối ưu; cơ dài ra nhiều nhất là ${join(nm(main.slice(0, 2)))}. `;
+  const longT = st.filter((m) => m.lts / m.lopt > 3).map((m) => esc(m.vi.toLowerCase()));
+  $("lede").innerHTML = lede + `Số liệu tính từ mô hình cơ–xương OpenSim, khung hình theo khung hình.` +
+    (longT.length ? ` Riêng ${longT.join(", ")} có gân dài, khi gồng mạnh gân giãn thêm nên sợi cơ giãn ít hơn chút.` : "") +
+    (data.notes ? `<br><span style="color:var(--muted);font-size:var(--step-0)">${esc(data.notes)}</span>` : "");
+  if (data.validation) { $("validation").hidden = false; $("validation-text").textContent = data.validation; }
+}
+
+setPlaying(state.playing);
+setColour("stretch");
+drawTimeline();
+if (!state.playing) state.t = ranked[0].st.t;
+refresh();
+// Móc kiểm thử: bộ kiểm tra hình ảnh tự động đặt camera / thời điểm qua đây.
+window.anatomyViewer = { camera, controls, bodyNodes, bodyIdx, setTime: (t) => { state.t = t; setPlaying(false); refresh(); }, setColour, select: (id) => select(byId[id] || null) };
+let last = performance.now();
+renderer.setAnimationLoop((now) => {
+  const step = Math.min((now - last) / 1000, 0.1); last = now;
+  if (state.playing) { state.t = (state.t + step * state.speed) % duration; refresh(); }
+  controls.update(); renderer.render(scene, camera);
+});
+const themeWatch = () => { PAL.read(); scene.background.set(css("--stage")); drawTimeline(); refresh(); };
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", themeWatch);
+new MutationObserver(themeWatch).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+</script>

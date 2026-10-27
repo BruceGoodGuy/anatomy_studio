@@ -1,0 +1,60 @@
+{
+ "template": {
+  "title": "Gập người chạm mũi chân",
+  "desc": "Giãn đùi sau: gối thẳng, gập hông và lưng.",
+  "tags": [
+   "giãn cơ",
+   "chạy bộ"
+  ],
+  "order": 10
+ },
+ "name": "Gập người chạm mũi chân",
+ "category": "Running from zero",
+ "mode": "standing",
+ "timing": {
+  "hold": 0.3,
+  "down": 2.2,
+  "pause": 1.2,
+  "up": 1.8
+ },
+ "options": {
+  "stance_width_cm": 20,
+  "toe_out_deg": 5
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "knee_flexion": 0,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": 0,
+   "arm_flexion": 0,
+   "arm_abduction": 6,
+   "arm_rotation": 0,
+   "elbow_flexion": 5,
+   "forearm_rotation": 85
+  },
+  {
+   "phase": 0.5,
+   "knee_flexion": 0,
+   "pelvis_anterior_tilt": 40,
+   "lumbar_flexion": 12,
+   "arm_flexion": 55,
+   "arm_abduction": 6,
+   "arm_rotation": 0,
+   "elbow_flexion": 5,
+   "forearm_rotation": 85
+  },
+  {
+   "phase": 1,
+   "knee_flexion": 0,
+   "pelvis_anterior_tilt": 70,
+   "lumbar_flexion": 30,
+   "arm_flexion": 105,
+   "arm_abduction": 6,
+   "arm_rotation": 0,
+   "elbow_flexion": 5,
+   "forearm_rotation": 85
+  }
+ ],
+ "notes": "Gối duỗi thẳng, gập dần từ hông rồi tới lưng, tay vươn về mũi chân."
+}

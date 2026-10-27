@@ -1,0 +1,51 @@
+{
+ "template": {
+  "title": "Đẩy cáp tam đầu (pushdown)",
+  "desc": "Cánh tay sát thân, khuỷu gập rồi duỗi.",
+  "tags": [
+   "thân trên",
+   "tam đầu",
+   "cáp"
+  ],
+  "order": 21
+ },
+ "name": "Đẩy cáp tam đầu (pushdown)",
+ "category": "Gym from zero",
+ "mode": "standing",
+ "timing": {
+  "hold": 0.3,
+  "down": 1.6,
+  "pause": 0.3,
+  "up": 1.2
+ },
+ "options": {
+  "stance_width_cm": 28,
+  "toe_out_deg": 8,
+  "arms": "same"
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "knee_flexion": 5,
+   "pelvis_anterior_tilt": 8,
+   "lumbar_flexion": 0,
+   "arm_flexion": 5,
+   "arm_abduction": 8,
+   "arm_rotation": 0,
+   "elbow_flexion": 5,
+   "forearm_rotation": 170
+  },
+  {
+   "phase": 1,
+   "knee_flexion": 5,
+   "pelvis_anterior_tilt": 8,
+   "lumbar_flexion": 0,
+   "arm_flexion": 10,
+   "arm_abduction": 8,
+   "arm_rotation": 0,
+   "elbow_flexion": 110,
+   "forearm_rotation": 170
+  }
+ ],
+ "notes": "Phase 0 = tay duỗi thẳng xuống, phase 1 = khuỷu gập (vị trí tam đầu dài nhất của bài này). So với duỗi tam đầu qua đầu, đầu dài ở đây ngắn hơn hẳn."
+}

@@ -1,0 +1,51 @@
+{
+ "template": {
+  "title": "Duỗi tam đầu qua đầu",
+  "desc": "Cánh tay giơ qua đầu, hạ tạ ra sau gáy.",
+  "tags": [
+   "thân trên",
+   "tam đầu",
+   "tạ đơn"
+  ],
+  "order": 20
+ },
+ "name": "Duỗi tam đầu qua đầu",
+ "category": "Gym from zero",
+ "mode": "standing",
+ "timing": {
+  "hold": 0.3,
+  "down": 1.6,
+  "pause": 0.3,
+  "up": 1.2
+ },
+ "options": {
+  "stance_width_cm": 28,
+  "toe_out_deg": 8,
+  "arms": "same"
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "knee_flexion": 3,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": -2,
+   "arm_flexion": 165,
+   "arm_abduction": 12,
+   "arm_rotation": 0,
+   "elbow_flexion": 20,
+   "forearm_rotation": 85
+  },
+  {
+   "phase": 1,
+   "knee_flexion": 3,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": -2,
+   "arm_flexion": 165,
+   "arm_abduction": 12,
+   "arm_rotation": 0,
+   "elbow_flexion": 140,
+   "forearm_rotation": 85
+  }
+ ],
+ "notes": "Cánh tay giữ thẳng đứng cạnh đầu; phase 1 = tạ hạ sâu sau gáy (tam đầu dài nhất)."
+}

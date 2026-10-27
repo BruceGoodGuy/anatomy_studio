@@ -1,0 +1,10 @@
+opensim==4.6
+numpy
+scipy
+trimesh
+fast-simplification
+rtree
+fastapi
+uvicorn
+# Only needed to rebuild the deformation field (python -m pipeline.zbind):
+#   pip install pyamg pymeshlab

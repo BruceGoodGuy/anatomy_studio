@@ -1,0 +1,68 @@
+{
+ "template": {
+  "title": "Nhón gót",
+  "desc": "Hai chân neo mũi, gót nhấc lên.",
+  "tags": [
+   "đứng",
+   "bắp chân"
+  ],
+  "order": 8
+ },
+ "name": "Nhón gót",
+ "category": "Gym from zero",
+ "mode": "free",
+ "timing": {
+  "hold": 0.3,
+  "down": 1.2,
+  "pause": 0.6,
+  "up": 1.4
+ },
+ "options": {
+  "anchor_r": "toes",
+  "anchor_l": "toes",
+  "auto_ankle": false
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": 0,
+   "hip_flexion_r": 0,
+   "hip_adduction_r": 0,
+   "hip_rotation_r": 0,
+   "knee_flexion_r": 0,
+   "ankle_dorsiflexion_r": 0,
+   "hip_flexion_l": 0,
+   "hip_adduction_l": 0,
+   "hip_rotation_l": 0,
+   "knee_flexion_l": 0,
+   "ankle_dorsiflexion_l": 0,
+   "arm_flexion": -20,
+   "arm_abduction": 32,
+   "arm_rotation": 25,
+   "elbow_flexion": 95,
+   "forearm_rotation": 150
+  },
+  {
+   "phase": 1,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": 0,
+   "hip_flexion_r": 0,
+   "hip_adduction_r": 0,
+   "hip_rotation_r": 0,
+   "knee_flexion_r": 0,
+   "ankle_dorsiflexion_r": -35,
+   "hip_flexion_l": 0,
+   "hip_adduction_l": 0,
+   "hip_rotation_l": 0,
+   "knee_flexion_l": 0,
+   "ankle_dorsiflexion_l": -35,
+   "arm_flexion": -20,
+   "arm_abduction": 32,
+   "arm_rotation": 25,
+   "elbow_flexion": 95,
+   "forearm_rotation": 150
+  }
+ ],
+ "notes": "Nhón lên bằng mũi chân, gối duỗi thẳng."
+}

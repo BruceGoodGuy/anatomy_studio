@@ -1,0 +1,51 @@
+{
+  "name": "Squat sumo",
+  "category": "Gym from zero",
+  "mode": "standing",
+  "timing": {
+    "hold": 0.3,
+    "down": 2.0,
+    "pause": 0.4,
+    "up": 1.4
+  },
+  "options": {
+    "stance_width_cm": 62,
+    "toe_out_deg": 35
+  },
+  "keyframes": [
+    {
+      "phase": 0,
+      "knee_flexion": 0,
+      "pelvis_anterior_tilt": 0,
+      "lumbar_flexion": 0,
+      "arm_flexion": 21,
+      "arm_abduction": -3,
+      "arm_rotation": 9,
+      "elbow_flexion": 111,
+      "forearm_rotation": 88
+    },
+    {
+      "phase": 0.5,
+      "knee_flexion": 55,
+      "pelvis_anterior_tilt": 8,
+      "lumbar_flexion": 2,
+      "arm_flexion": 21,
+      "arm_abduction": -3,
+      "arm_rotation": 9,
+      "elbow_flexion": 111,
+      "forearm_rotation": 88
+    },
+    {
+      "phase": 1,
+      "knee_flexion": 105,
+      "pelvis_anterior_tilt": 18,
+      "lumbar_flexion": 4,
+      "arm_flexion": 21,
+      "arm_abduction": -3,
+      "arm_rotation": 9,
+      "elbow_flexion": 111,
+      "forearm_rotation": 88
+    }
+  ],
+  "notes": "Chân rộng, mũi chân xoay ra, thân thẳng hơn squat thường."
+}

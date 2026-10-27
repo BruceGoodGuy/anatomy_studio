@@ -1,0 +1,39 @@
+{
+  "name": "Romanian deadlift (RDL)",
+  "category": "Gym from zero",
+  "mode": "standing",
+  "timing": {
+    "hold": 0.3,
+    "down": 2.2,
+    "pause": 0.3,
+    "up": 1.4
+  },
+  "options": {
+    "stance_width_cm": 24,
+    "toe_out_deg": 5
+  },
+  "keyframes": [
+    {
+      "phase": 0,
+      "knee_flexion": 5,
+      "pelvis_anterior_tilt": 0,
+      "lumbar_flexion": 0,
+      "arm_flexion": 0
+    },
+    {
+      "phase": 0.5,
+      "knee_flexion": 15,
+      "pelvis_anterior_tilt": 38,
+      "lumbar_flexion": 2,
+      "arm_flexion": 35
+    },
+    {
+      "phase": 1,
+      "knee_flexion": 20,
+      "pelvis_anterior_tilt": 72,
+      "lumbar_flexion": 5,
+      "arm_flexion": 70
+    }
+  ],
+  "notes": "Gối hơi chùng, đẩy hông ra sau, lưng giữ thẳng. Tay buông theo tạ (tay đưa ra trước so với thân)."
+}

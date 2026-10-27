@@ -1,0 +1,51 @@
+{
+ "template": {
+  "title": "Đẩy vai qua đầu",
+  "desc": "Đứng đẩy tạ từ vai lên thẳng tay qua đầu.",
+  "tags": [
+   "thân trên",
+   "vai",
+   "tạ đòn"
+  ],
+  "order": 17
+ },
+ "name": "Đẩy vai qua đầu (overhead press)",
+ "category": "Gym from zero",
+ "mode": "standing",
+ "timing": {
+  "hold": 0.3,
+  "down": 1.6,
+  "pause": 0.3,
+  "up": 1.2
+ },
+ "options": {
+  "stance_width_cm": 30,
+  "toe_out_deg": 10,
+  "arms": "same"
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "knee_flexion": 2,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": 0,
+   "arm_flexion": 30,
+   "arm_abduction": 70,
+   "arm_rotation": -75,
+   "elbow_flexion": 105,
+   "forearm_rotation": 170
+  },
+  {
+   "phase": 1,
+   "knee_flexion": 2,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": -3,
+   "arm_flexion": 15,
+   "arm_abduction": 165,
+   "arm_rotation": -10,
+   "elbow_flexion": 8,
+   "forearm_rotation": 170
+  }
+ ],
+ "notes": "Phase 0 = thanh tạ ở ngang vai, phase 1 = tay thẳng qua đầu."
+}

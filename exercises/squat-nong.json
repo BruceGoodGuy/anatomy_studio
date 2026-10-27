@@ -1,0 +1,51 @@
+{
+  "name": "Half squat (squat nông)",
+  "category": "Gym from zero",
+  "mode": "standing",
+  "timing": {
+    "hold": 0.3,
+    "down": 1.5,
+    "pause": 0.3,
+    "up": 1.1
+  },
+  "options": {
+    "stance_width_cm": 32,
+    "toe_out_deg": 15
+  },
+  "keyframes": [
+    {
+      "phase": 0,
+      "knee_flexion": 0,
+      "pelvis_anterior_tilt": 0,
+      "lumbar_flexion": 0,
+      "arm_flexion": 85,
+      "arm_abduction": 6,
+      "arm_rotation": 0,
+      "elbow_flexion": 8,
+      "forearm_rotation": 40
+    },
+    {
+      "phase": 0.5,
+      "knee_flexion": 38,
+      "pelvis_anterior_tilt": 10,
+      "lumbar_flexion": 2,
+      "arm_flexion": 85,
+      "arm_abduction": 6,
+      "arm_rotation": 0,
+      "elbow_flexion": 8,
+      "forearm_rotation": 40
+    },
+    {
+      "phase": 1,
+      "knee_flexion": 75,
+      "pelvis_anterior_tilt": 20,
+      "lumbar_flexion": 4,
+      "arm_flexion": 85,
+      "arm_abduction": 6,
+      "arm_rotation": 0,
+      "elbow_flexion": 8,
+      "forearm_rotation": 40
+    }
+  ],
+  "notes": "Xuống tới khi đùi còn chéo, gối khoảng 75°. So sánh với squat sâu để thấy cơ nào mất phần giãn."
+}

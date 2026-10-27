@@ -1,0 +1,72 @@
+{
+ "template": {
+  "title": "Kéo xà (tay sấp, rộng)",
+  "desc": "Treo xà, kéo người lên tới cằm qua xà.",
+  "tags": [
+   "thân trên",
+   "lưng xô",
+   "xà đơn"
+  ],
+  "order": 13
+ },
+ "name": "Kéo xà tay sấp",
+ "category": "Gym from zero",
+ "mode": "free",
+ "timing": {
+  "hold": 0.4,
+  "down": 1.2,
+  "pause": 0.3,
+  "up": 1.6
+ },
+ "options": {
+  "anchor_r": "none",
+  "anchor_l": "none",
+  "anchor_hand_r": "bar",
+  "anchor_hand_l": "bar",
+  "arms": "same",
+  "pelvis_height_cm": 94
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": 0,
+   "hip_flexion_r": 10,
+   "hip_adduction_r": 0,
+   "hip_rotation_r": 0,
+   "knee_flexion_r": 25,
+   "ankle_dorsiflexion_r": -10,
+   "hip_flexion_l": 10,
+   "hip_adduction_l": 0,
+   "hip_rotation_l": 0,
+   "knee_flexion_l": 25,
+   "ankle_dorsiflexion_l": -10,
+   "arm_flexion": 0,
+   "arm_abduction": 160,
+   "arm_rotation": -45,
+   "elbow_flexion": 5,
+   "forearm_rotation": 150
+  },
+  {
+   "phase": 1,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": 0,
+   "hip_flexion_r": 10,
+   "hip_adduction_r": 0,
+   "hip_rotation_r": 0,
+   "knee_flexion_r": 25,
+   "ankle_dorsiflexion_r": -10,
+   "hip_flexion_l": 10,
+   "hip_adduction_l": 0,
+   "hip_rotation_l": 0,
+   "knee_flexion_l": 25,
+   "ankle_dorsiflexion_l": -10,
+   "arm_flexion": 0,
+   "arm_abduction": 30,
+   "arm_rotation": -60,
+   "elbow_flexion": 128,
+   "forearm_rotation": 150
+  }
+ ],
+ "notes": "Phase 0 = treo thẳng tay (lưng xô bị kéo dài nhất), phase 1 = kéo lên đỉnh."
+}

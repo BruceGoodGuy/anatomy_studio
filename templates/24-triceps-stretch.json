@@ -1,0 +1,61 @@
+{
+ "template": {
+  "title": "Giãn tam đầu qua đầu",
+  "desc": "Giơ tay qua đầu, gập khuỷu để bàn tay chạm lưng.",
+  "tags": [
+   "giãn cơ",
+   "tam đầu"
+  ],
+  "order": 24
+ },
+ "name": "Giãn tam đầu qua đầu",
+ "category": "Lifestyle",
+ "mode": "standing",
+ "timing": {
+  "hold": 0.3,
+  "down": 1.6,
+  "pause": 1.5,
+  "up": 1.2
+ },
+ "options": {
+  "stance_width_cm": 26,
+  "toe_out_deg": 8,
+  "arms": "same"
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "knee_flexion": 0,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": 0,
+   "arm_flexion": 0,
+   "arm_abduction": 8,
+   "arm_rotation": 0,
+   "elbow_flexion": 10,
+   "forearm_rotation": 85
+  },
+  {
+   "phase": 0.5,
+   "knee_flexion": 0,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": 0,
+   "arm_flexion": 165,
+   "arm_abduction": 10,
+   "arm_rotation": 0,
+   "elbow_flexion": 60,
+   "forearm_rotation": 85
+  },
+  {
+   "phase": 1,
+   "knee_flexion": 0,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": -3,
+   "arm_flexion": 172,
+   "arm_abduction": 12,
+   "arm_rotation": 0,
+   "elbow_flexion": 145,
+   "forearm_rotation": 85
+  }
+ ],
+ "notes": "Cánh tay sát tai, khuỷu gập hết cỡ."
+}

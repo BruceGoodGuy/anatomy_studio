@@ -1,0 +1,72 @@
+{
+ "template": {
+  "title": "Chống đẩy",
+  "desc": "Mũi chân và bàn tay neo sàn, thân thẳng như tấm ván.",
+  "tags": [
+   "thân trên",
+   "ngực",
+   "không dụng cụ"
+  ],
+  "order": 12
+ },
+ "name": "Chống đẩy",
+ "category": "Gym from zero",
+ "mode": "free",
+ "timing": {
+  "hold": 0.3,
+  "down": 1.6,
+  "pause": 0.3,
+  "up": 1.2
+ },
+ "options": {
+  "anchor_r": "toes",
+  "anchor_l": "toes",
+  "auto_ankle": true,
+  "anchor_hand_r": "floor",
+  "anchor_hand_l": "floor",
+  "arms": "same"
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "pelvis_anterior_tilt": 75,
+   "lumbar_flexion": 0,
+   "hip_flexion_r": 0,
+   "hip_adduction_r": 0,
+   "hip_rotation_r": 0,
+   "knee_flexion_r": 0,
+   "ankle_dorsiflexion_r": 0,
+   "hip_flexion_l": 0,
+   "hip_adduction_l": 0,
+   "hip_rotation_l": 0,
+   "knee_flexion_l": 0,
+   "ankle_dorsiflexion_l": 0,
+   "arm_flexion": 74,
+   "arm_abduction": 22,
+   "arm_rotation": 0,
+   "elbow_flexion": 0,
+   "forearm_rotation": 170
+  },
+  {
+   "phase": 1,
+   "pelvis_anterior_tilt": 84,
+   "lumbar_flexion": 0,
+   "hip_flexion_r": 0,
+   "hip_adduction_r": 0,
+   "hip_rotation_r": 0,
+   "knee_flexion_r": 0,
+   "ankle_dorsiflexion_r": 0,
+   "hip_flexion_l": 0,
+   "hip_adduction_l": 0,
+   "hip_rotation_l": 0,
+   "knee_flexion_l": 0,
+   "ankle_dorsiflexion_l": 0,
+   "arm_flexion": 25,
+   "arm_abduction": 45,
+   "arm_rotation": 0,
+   "elbow_flexion": 105,
+   "forearm_rotation": 170
+  }
+ ],
+ "notes": "Hai tay rộng hơn vai một chút, khuỷu mở khoảng 45° so với thân, hạ ngực gần chạm sàn."
+}

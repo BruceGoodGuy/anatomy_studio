@@ -1,0 +1,61 @@
+{
+ "template": {
+  "title": "Romanian deadlift (RDL)",
+  "desc": "Gập hông, gối hơi chùng, tay buông theo thanh tạ.",
+  "tags": [
+   "đứng",
+   "gym",
+   "bản lề hông"
+  ],
+  "order": 4
+ },
+ "name": "Romanian deadlift",
+ "category": "Gym from zero",
+ "mode": "standing",
+ "timing": {
+  "hold": 0.3,
+  "down": 2.2,
+  "pause": 0.3,
+  "up": 1.4
+ },
+ "options": {
+  "stance_width_cm": 24,
+  "toe_out_deg": 5
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "knee_flexion": 5,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": 0,
+   "arm_flexion": 0,
+   "arm_abduction": 6,
+   "arm_rotation": 0,
+   "elbow_flexion": 5,
+   "forearm_rotation": 85
+  },
+  {
+   "phase": 0.5,
+   "knee_flexion": 15,
+   "pelvis_anterior_tilt": 38,
+   "lumbar_flexion": 2,
+   "arm_flexion": 40,
+   "arm_abduction": 6,
+   "arm_rotation": 0,
+   "elbow_flexion": 5,
+   "forearm_rotation": 85
+  },
+  {
+   "phase": 1,
+   "knee_flexion": 20,
+   "pelvis_anterior_tilt": 72,
+   "lumbar_flexion": 5,
+   "arm_flexion": 77,
+   "arm_abduction": 6,
+   "arm_rotation": 0,
+   "elbow_flexion": 5,
+   "forearm_rotation": 85
+  }
+ ],
+ "notes": "Đẩy hông ra sau, lưng giữ trung tính, gối chỉ hơi chùng."
+}

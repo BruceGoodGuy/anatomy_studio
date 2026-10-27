@@ -1,0 +1,68 @@
+{
+ "template": {
+  "title": "RDL một chân",
+  "desc": "Đứng chân phải, chân trái duỗi ra sau theo thân.",
+  "tags": [
+   "một chân",
+   "bản lề hông"
+  ],
+  "order": 7
+ },
+ "name": "RDL một chân (đứng chân phải)",
+ "category": "Gym from zero",
+ "mode": "free",
+ "timing": {
+  "hold": 0.3,
+  "down": 2.2,
+  "pause": 0.4,
+  "up": 1.4
+ },
+ "options": {
+  "anchor_r": "flat",
+  "anchor_l": "none",
+  "auto_ankle": true
+ },
+ "keyframes": [
+  {
+   "phase": 0,
+   "pelvis_anterior_tilt": 0,
+   "lumbar_flexion": 0,
+   "hip_flexion_r": 0,
+   "hip_adduction_r": 0,
+   "hip_rotation_r": 0,
+   "knee_flexion_r": 8,
+   "ankle_dorsiflexion_r": 0,
+   "hip_flexion_l": 0,
+   "hip_adduction_l": 0,
+   "hip_rotation_l": 0,
+   "knee_flexion_l": 10,
+   "ankle_dorsiflexion_l": 0,
+   "arm_flexion": 0,
+   "arm_abduction": 6,
+   "arm_rotation": 0,
+   "elbow_flexion": 5,
+   "forearm_rotation": 85
+  },
+  {
+   "phase": 1,
+   "pelvis_anterior_tilt": 70,
+   "lumbar_flexion": 4,
+   "hip_flexion_r": 68,
+   "hip_adduction_r": 0,
+   "hip_rotation_r": 0,
+   "knee_flexion_r": 20,
+   "ankle_dorsiflexion_r": 0,
+   "hip_flexion_l": -2,
+   "hip_adduction_l": 0,
+   "hip_rotation_l": 0,
+   "knee_flexion_l": 5,
+   "ankle_dorsiflexion_l": 0,
+   "arm_flexion": 74,
+   "arm_abduction": 14,
+   "arm_rotation": 0,
+   "elbow_flexion": 5,
+   "forearm_rotation": 85
+  }
+ ],
+ "notes": "Đứng trên chân phải, chân trái duỗi ra sau cùng lúc thân gập xuống."
+}

@@ -1,0 +1,59 @@
+{
+  "name": "Split squat (chân phải trước)",
+  "category": "Gym from zero",
+  "mode": "free",
+  "timing": {
+    "hold": 0.3,
+    "down": 1.8,
+    "pause": 0.3,
+    "up": 1.3
+  },
+  "options": {
+    "anchor_r": "flat",
+    "anchor_l": "toes",
+    "auto_ankle": true
+  },
+  "keyframes": [
+    {
+      "phase": 0.0,
+      "pelvis_anterior_tilt": 4,
+      "lumbar_flexion": 0,
+      "hip_flexion_r": 32,
+      "hip_adduction_r": 0,
+      "hip_rotation_r": 0,
+      "knee_flexion_r": 8,
+      "ankle_dorsiflexion_r": 0,
+      "hip_flexion_l": -20,
+      "hip_adduction_l": 0,
+      "hip_rotation_l": 0,
+      "knee_flexion_l": 12,
+      "ankle_dorsiflexion_l": -22,
+      "arm_flexion": -20,
+      "arm_abduction": 32,
+      "arm_rotation": 25,
+      "elbow_flexion": 95,
+      "forearm_rotation": 40
+    },
+    {
+      "phase": 1.0,
+      "pelvis_anterior_tilt": 10,
+      "lumbar_flexion": 3,
+      "hip_flexion_r": 84,
+      "hip_adduction_r": 0,
+      "hip_rotation_r": 0,
+      "knee_flexion_r": 95,
+      "ankle_dorsiflexion_r": 0,
+      "hip_flexion_l": 15,
+      "hip_adduction_l": 0,
+      "hip_rotation_l": 0,
+      "knee_flexion_l": 90,
+      "ankle_dorsiflexion_l": -37,
+      "arm_flexion": -20,
+      "arm_abduction": 32,
+      "arm_rotation": 25,
+      "elbow_flexion": 95,
+      "forearm_rotation": 40
+    }
+  ],
+  "notes": "Chân phải phía trước neo phẳng, chân trái phía sau neo mũi chân."
+}
